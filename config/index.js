@@ -9,7 +9,7 @@ const config = {
   },
   sourceRoot: "src",
   outputRoot: `dist/${process.env.TARO_ENV}`,
-  plugins: [],
+  plugins: ['tarojs-router-next-plugin'],
   defineConstants: {},
   copy: {
     patterns: [],
@@ -36,6 +36,16 @@ const config = {
         },
       },
     },
+    webpackChain(chain, webpack) {
+      // linaria/loader 选项详见 https://github.com/callstack/linaria/blob/master/docs/BUNDLERS_INTEGRATION.md#webpack
+      chain.module
+        .rule('script')
+        .use('linariaLoader')
+        .loader('linaria/loader')
+        .options({
+          sourceMap: process.env.NODE_ENV !== 'production',
+        })
+    }
   },
   h5: {
     publicPath: "/",
@@ -53,6 +63,16 @@ const config = {
         },
       },
     },
+    webpackChain(chain, webpack) {
+      chain.module
+        .rule('script')
+        .use('linariaLoader')
+        .loader('linaria/loader')
+        .options({
+          sourceMap: process.env.NODE_ENV !== 'production',
+        })
+    },
+    esnextModules: ['taro-skeleton']
   },
 };
 

@@ -1,5 +1,7 @@
 import { Component } from "react";
 import "./app.scss";
+import 'taro-skeleton/dist/index.css' // 引入组件样式
+
 class App extends Component {
   componentDidMount() {}
 
