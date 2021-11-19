@@ -48,6 +48,7 @@ const config = {
     }
   },
   h5: {
+    esnextModules: ['taro-skeleton'],
     publicPath: "/",
     staticDirectory: "static",
     postcss: {
