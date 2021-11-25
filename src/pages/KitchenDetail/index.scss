@@ -1,0 +1,63 @@
+page {
+  background-color: white;
+  box-sizing      : border-box;
+  color           : #333;
+  height: 100%;
+}
+.itemImage{
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.downImage{
+  width: 90%;
+  height: 400px;
+  overflow: hidden;
+  margin: 5% 30px;
+  border-radius: 20px;
+}
+.itemTitle{
+  color: #1B1B1B;
+  font-size: 46px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.itemContent{
+  color: #1B1B1B;
+  font-size: 34px;
+  font-weight: 500;
+  margin: 50px 30px;
+}
+.itemDes{
+  color: #858282;
+  font-size: 30px;
+}
+.itemShow{
+  color: #1B1B1B;
+  font-size: 40px;
+  font-weight: 500;
+  margin:0px 5%
+}
+.tag{
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #1B1B1B;
+  margin: 10px 20px;
+}
+.itemLeft{
+  color: rgb(153, 134, 238);
+  font-size: 40px;
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+.itemRight{
+  color: #858282;
+  font-size: 40px;
+  margin-right: 30px;
+  margin-bottom: 20px;
+}
+.downView{
+  margin-bottom: 100px;
+}

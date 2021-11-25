@@ -1,9 +1,10 @@
 import { 
   ScrollView,
   View,
-  Text
+  Text,
+  Image,
+  Button
  } from "@tarojs/components";
-import {  } from "taro-hooks";
 import Taro from '@tarojs/taro'
 import {styled} from 'linaria/react'
 import './index.scss'
@@ -13,38 +14,56 @@ import { TaroVirtualList } from 'taro-virtual-list'
 import {useState,useEffect} from 'react'
 import axios from 'taro-axios'
 import {Router} from 'tarojs-router-next'
-import { AtTabs, AtTabsPane,AtDrawer,AtIcon } from 'taro-ui'
 import "taro-ui/dist/style/components/tabs.scss";
 import "taro-ui/dist/style/components/icon.scss";
-
-const Title = styled(View)<{
-  active:boolean
-}>`
- color:${({active})=>active?'red':'blue'}
-`
+import React,{useRef} from 'react'
 
 const Home = () => {
-  const [pageDatas,setPageDatas] = useState([])
+
+  const [imageList,setImageList] = useState([])
+
+  const page = useRef(1)
+  const loading = useRef(false)
 
   useEffect(()=>{
-    getNewsData(tabList[0].title,0)
+    getNewsData()
   },[])
 
-  const getNewsData = (type:string,index:number)=>{
-    
+  const getNewsData = ()=>{
+    loading.current = true
     axios
-      .get('http://api.wpbom.com/api/wallpa.php?msg=4')
-      .then(res => {
-        console.log('res.data',res.data)
-
-
-      })
+    .get(`https://way.jd.com/showapi/tpxh?time=2015-07-10&page=${page.current}&maxResult=20&appkey=7e9979a264855fff26bea74a253fee06`)
+    .then(res => {
+      console.log('page.current==',page.current)
+      console.log('res=',res);
+      
+      loading.current = false
+      if(res.data.code == "10000"){        
+        let temp = [...imageList]
+        res.data.result.showapi_res_body.contentlist.map((item:any)=>{
+          temp.push(item.img.replace('http://','https://'))
+        })
+        console.log('temp===',temp);
+        
+        setImageList(temp)
+      }
+    }).catch(()=>{  
+      loading.current = false    
+    })
   }
-
+ 
   const renderFunc = (item, index, pageIndex) => {
+    
     return (
-      <Skeleton loading={true} avatar title row={2}>
-        <View className="el">{`当前是第${item}个元素，是第${pageIndex}页的数据`}</View>
+      <Skeleton loading={false} title >
+        <Button key={item} className="itemView" onClick={()=>{          
+          Taro.previewImage({
+            current: item,
+            urls: imageList
+          })
+        }}>
+          <Image mode={'widthFix'} src={item}/>
+        </Button>
       </Skeleton>
     )
   }
@@ -53,50 +72,29 @@ const Home = () => {
   }
   const handleComplete = () => {
     console.log('加载完成')
-  }
-  const onScrollToLower = ()=>{
-    console.log('分页加载')
-  }
-  
-  const handleClick = (index:number)=>{
-    console.log('index==',index);
-    setCurrent(index)
+    if (!loading.current){      
+      page.current += 1
+      getNewsData()
+    }
   }
  
-  
-  const [current,setCurrent] = useState(0)
-
   return (
     <View>
-<TaroVirtualList
-                list={[1,2,3,4,5]}
-                listType={'single'}
-                onRender={renderFunc}
-                onBottom={handleBottom}
-                onComplete={handleComplete}
-              />
+      <TaroVirtualList
+        list={imageList}
+        onRender={renderFunc}
+        onBottom={handleBottom}
+        onComplete={handleComplete}
+        scrollViewProps={{
+          style: {
+            "height": '100vh',
+          },
+        }}
+        onRenderBottom={()=><Skeleton loading={true} row={1} ></Skeleton>}
+      />
     </View>
    
   );
 };
 
 export default Home;
-
-const tabList = [
-  {title:'头条'},
-  {title:'新闻'},
-  {title:'国内'},
-  {title:'国际'},
-  {title:'政治'},
-  {title:'财经'},
-  {title:'体育'},
-  {title:'娱乐'},
-  {title:'军事'},
-  {title:'教育'},
-  {title:'科技'},
-  {title:'NBA'},
-  {title:'股票'},
-  {title:'星座'},
-  {title:'女性'},
-  {title:'健康'},
-  {title:'育儿'}]

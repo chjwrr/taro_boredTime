@@ -1,51 +1,96 @@
 import { 
   ScrollView,
   View,
-  Text
+  Text,
+  Image
  } from "@tarojs/components";
-import {  } from "taro-hooks";
 import Taro from '@tarojs/taro'
 import {styled} from 'linaria/react'
 import './index.scss'
-import {useState,useEffect} from 'react'
+import {useState,useEffect,useLayoutEffect} from 'react'
 import axios from 'taro-axios'
 import {Router,NavigateType} from 'tarojs-router-next'
+import NavBar from '../../components/NavBar'
 
 const Splash = () => {
   const [content,setContent] = useState('')
-  const [contentEn,setContentEn] = useState('')
+  const [chContent,setCnContent] = useState('')
+  const [time,setTime] = useState(5)
+
+  useLayoutEffect(()=>{
+    // Taro.setNavigationBarColor({
+    //   frontColor: '#ffffff',
+    //   backgroundColor: '#ff0000',
+    //   animation: {
+    //       duration: 400,
+    //       timingFunc: 'easeIn'
+    //   }  
+    // })
+    
+  })
 
   useEffect(()=>{
-
-    axios
-    .get('https://way.jd.com/jisuapi/get?channel=头条&num=10&start=0&appkey=7e9979a264855fff26bea74a253fee06')
-    .then(res => {
-      console.log('res.data',res.data)
-      if (res.data.code == 200){
-        setContentEn(res.data.newslist[0].en)
-        setContent(res.data.newslist[0].zh)
-
-        setTimeout(() => {
-         Router.toHome({
-          params: {
-            params1:'1'
-          },
-          data: {
-            title:'index',
-            typeId:1
-          },
-          type:NavigateType.reLaunch
-         })
-        }, 3000);
-      }
-    })
-
+    const hour = new Date().getHours()
+    if (hour >= 5 && hour <= 9){
+      axios
+      .get('https://api.tianapi.com/zaoan/index?key=bee76a2202b7c21dd90c5163cb8b4506')
+      .then(res => {
+        console.log('resdfasdfasds=',res);
+        if (res.data.code == 200 && res.data.newslist.length > 0){
+          setContent(res.data.newslist[0].content)
+        }
+        jumpHome()
+      }).catch(()=>{  
+        jumpHome()
+      })
+    }else if (hour >= 18 && hour <= 24){
+      axios
+      .get('https://api.tianapi.com/wanan/index?key=bee76a2202b7c21dd90c5163cb8b4506')
+      .then(res => {
+        console.log('resdfasdfa1111111sds=',res);
+        if (res.data.code == 200 && res.data.newslist.length > 0){
+          setContent(res.data.newslist[0].content)
+        }
+        jumpHome()
+      }).catch(()=>{  
+        jumpHome()
+      })
+    }else {
+      axios
+      .get('https://api.tianapi.com/txapi/ensentence/index?key=bee76a2202b7c21dd90c5163cb8b4506')
+      .then(res => {
+        console.log('resdfasdfa111333331111sds=',res);
+        if (res.data.code == 200 && res.data.newslist.length > 0){
+          setContent(res.data.newslist[0].en)
+          setCnContent(res.data.newslist[0].zh)
+        }     
+        jumpHome()
+      }).catch(()=>{  
+        jumpHome()
+      })
+    }
   },[])
 
+  function jumpHome(){
+    let temp = time
+    let interval = setInterval(()=>{
+      if (temp <= 1){
+        interval && clearInterval(interval)
+        Router.toKitchen({
+        type:NavigateType.reLaunch
+        })
+      }
+      temp --
+    setTime((pre)=>pre - 1)
+    },1000)
+  }
+
   return (
-    <View>
-      <Text>{contentEn}</Text>
-      <Text>{content}</Text>
+    <View className="contain">
+      {/* <NavBar title={'标题'}/> */}
+      <Text className="content">{content}</Text>
+      <Text className="content">{chContent}</Text>
+      <View className="countdown">{time}s</View>
     </View>
    
   );

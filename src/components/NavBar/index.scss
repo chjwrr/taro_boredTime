@@ -1,0 +1,19 @@
+page {
+  background-color: white;
+  box-sizing      : border-box;
+  color           : #333;
+}
+
+.navbar{
+  background-color: aquamarine;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.title{
+  color: #000;
+  font-size: 34px;
+  font-weight: bold;
+}

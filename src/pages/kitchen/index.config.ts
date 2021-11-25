@@ -1,4 +1,4 @@
 export default {
   enableShareAppMessage: true,
-  navigationBarTitleText:''
+  navigationBarTitleText:'厨霸在此'
 };

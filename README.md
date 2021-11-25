@@ -1,28 +1,16 @@
 # taro_boredTime
 taro小程序
 
-开屏页：
-早安心语 0：00-10：00
-英语一句话 10：00-20：00
-晚安心语 20：00-24：00
 
-开屏 modal，动画显示文字，5s关闭，倒计时动画
+食谱app：我是厨神
 
-
-tabbar：
-图片:搞笑图片
+菜谱接口：
+https://way.jd.com/jisuapi/search?keyword=白菜&num=10&appkey=7e9979a264855fff26bea74a253fee06
 
 
-上线10天后开启
-侧边栏：
-神回复
-舔狗日记
-新闻、语录（暖文语录、美文、英语励志语录）
+功能2：https://api.uomg.com/api/rand.music?sort=热歌榜&format=json   随机播放背景音乐
+功能3：背景图片，使用音乐的图片
 
-https://www.tianapi.com;https://way.jd.com;https://route.showapi.com;https://qianming.sinaapp.com;https://v2.alapi.cn;https://n.sinaimg.cn;https://wx1.sinaimg.cn
+https://way.jd.com;https://v2.alapi.cn;https://api.uomg.com;https://api.jisuapi.com;https://p3.music.126.net;https://music.163.com
 
 
-
-
-
-https://github.com/lentoo/taro-skeleton/
